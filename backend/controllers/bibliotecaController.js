@@ -1,5 +1,18 @@
 const Biblioteca = require('../models/biblioteca');
 
+const multer = require('multer');
+const path = require('path');
+
+// Configuración de multer
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, 'uploads/'); // Directorio donde se guardarán los archivos
+    },
+    filename: (req, file, cb) => {
+      cb(null, file.fieldname + '-' + Date.now() + '.' + file.originalname.split('.').pop());
+    }
+  });
+  const upload = multer({ storage: storage });
 
 // Obtener todos los elementos
 exports.getBibliotecas = (req, res) => {
@@ -27,15 +40,16 @@ exports.getBibliotecaById = (req, res) => {
         });
 };
 
-// Crear un nuevo elemento
+// Modifica el controlador de creación para manejar la carga de archivos
 exports.createBiblioteca = (req, res) => {
     const newBiblioteca = new Biblioteca({
         title: req.body.title,
         descripcion: req.body.descripcion,
-        imagen: req.body.imagen,
+        imagenPath: req.file ? req.file.path : '', // Almacena la ruta del archivo multimedia
         fecha: req.body.fecha,
         // Otros campos que desees para tu modelo
     });
+
     newBiblioteca.save()
         .then((biblioteca) => {
             res.status(201).json(biblioteca);
@@ -46,11 +60,22 @@ exports.createBiblioteca = (req, res) => {
 };
 
 
-// Actualizar un elemento existente
+// Modifica el controlador de actualización para manejar la carga de archivos
 exports.updateBiblioteca = (req, res) => {
     console.log('Cuerpo de la solicitud:', req.body); // Agrega esta línea para depurar
     
-    Biblioteca.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    const updateData = {
+        title: req.body.title,
+        descripcion: req.body.descripcion,
+        fecha: req.body.fecha,
+        // Otros campos que desees para tu modelo
+    };
+
+    if (req.file) {
+        updateData.imagenPath = req.file.path;
+    }
+
+    Biblioteca.findByIdAndUpdate(req.params.id, updateData, { new: true })
         .then((biblioteca) => {
             if (!biblioteca) {
                 return res.status(404).json({ message: 'Elemento no encontrado' });
@@ -61,7 +86,6 @@ exports.updateBiblioteca = (req, res) => {
             res.status(500).json({ error: error.message });
         });
 };
-
 
 // Eliminar un elemento existente
 exports.deleteBiblioteca = (req, res) => {

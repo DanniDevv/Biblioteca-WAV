@@ -2,30 +2,30 @@
   <h2>Bibliotecas</h2>
 
   <!-- Formulario para crear/editar una biblioteca -->
-  <form (ngSubmit)="currentBiblioteca._id ? updateBiblioteca(currentBiblioteca._id, currentBiblioteca) : createBiblioteca(currentBiblioteca)">
+  <form [formGroup]="bibliotecaForm" (ngSubmit)="currentBiblioteca._id ? updateBiblioteca(currentBiblioteca._id) : createBiblioteca()" enctype="multipart/form-data">
     <div class="form-group">
       <label for="title">Title:</label>
-      <input type="text" class="form-control" [(ngModel)]="currentBiblioteca.title" name="title" required>
+      <input type="text" class="form-control" formControlName="title" required>
     </div>
 
     <div class="form-group">
       <label for="descripcion">Description:</label>
-      <textarea class="form-control" [(ngModel)]="currentBiblioteca.descripcion" name="descripcion" required></textarea>
-  </div>
-
+      <textarea class="form-control" formControlName="descripcion" required></textarea>
+    </div>
 
     <div class="form-group">
-      <label for="imagen">Image URL:</label>
-      <input type="text" class="form-control" [(ngModel)]="currentBiblioteca.imagen" name="imagen" required>
+      <label for="imagen">Image:</label>
+      <input type="file" accept=".png" (change)="onFileChange($event)" formControlName="imagen" required>
     </div>
 
     <div class="form-group">
       <label for="fecha">Fecha:</label>
-      <input type="date" class="form-control" [(ngModel)]="currentBiblioteca.fecha" name="fecha" required>
+      <input type="date" class="form-control" formControlName="fecha" required>
     </div>
 
-    <button type="submit" class="btn btn-primary">{{currentBiblioteca._id ? 'Update' : 'Add'}}</button>
+    <button type="submit" class="btn btn-primary">Add</button>
   </form>
+
 
   <hr>
 
@@ -44,7 +44,7 @@
       <tr *ngFor="let biblioteca of bibliotecas">
         <td>{{ biblioteca.title }}</td>
         <td>{{ biblioteca.descripcion }}</td>
-        <td><img [src]="biblioteca.imagen" alt="Biblioteca Image" style="max-width: 100px;"></td>
+        <td><img [src]="'http://localhost:3000/' + biblioteca?.imagenPath" alt="Biblioteca Image" style="max-width: 100px;"></td>
         <td>{{ biblioteca.fecha | date }}</td>
         <td>
           <button class="btn btn-sm btn-primary" (click)="editBiblioteca(biblioteca._id)">Edit</button>

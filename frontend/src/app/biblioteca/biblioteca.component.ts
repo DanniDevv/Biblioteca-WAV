@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BibliotecaService } from '../biblioteca.service';
 
 @Component({
@@ -9,8 +10,16 @@ import { BibliotecaService } from '../biblioteca.service';
 export class BibliotecaComponent implements OnInit {
   bibliotecas: any[] = [];
   currentBiblioteca: any = {};
+  bibliotecaForm: FormGroup;
 
-  constructor(private bibliotecaService: BibliotecaService) { }
+  constructor(private bibliotecaService: BibliotecaService, private fb: FormBuilder) {
+    this.bibliotecaForm = this.fb.group({
+      title: ['', Validators.required],
+      descripcion: ['', Validators.required],
+      imagen: [null, Validators.required],
+      fecha: ['', Validators.required]
+    });
+  }
 
   ngOnInit(): void {
     this.getBibliotecas();
@@ -23,38 +32,53 @@ export class BibliotecaComponent implements OnInit {
       });
   }
 
-  getBibliotecaById(id: string): void {
-    this.bibliotecaService.getBibliotecaById(id)
-      .subscribe((biblioteca) => {
-        this.currentBiblioteca = biblioteca;
-      });
-  }
-
-  createBiblioteca(biblioteca: any): void {
-    this.bibliotecaService.createBiblioteca(biblioteca)
-    .subscribe(() => {
-      this.getBibliotecas();
-      this.currentBiblioteca = {};
-    });
-  }
-
-// En el componente Angular
-updateBiblioteca(id: string, biblioteca: any): void {
-  this.bibliotecaService.updateBiblioteca(id, biblioteca)
+  createBiblioteca(): void {
+    this.bibliotecaService.createBiblioteca(this.bibliotecaForm.value)
       .subscribe(() => {
-          this.getBibliotecas();
-          this.currentBiblioteca = {};
+        this.getBibliotecas();
+        this.bibliotecaForm.reset();
+        this.currentBiblioteca = {};
       });
-}
+  }
+
+  updateBiblioteca(id: string): void {
+    this.bibliotecaService.updateBiblioteca(id, this.bibliotecaForm.value)
+      .subscribe(() => {
+        this.getBibliotecas();
+        this.bibliotecaForm.reset();
+        this.currentBiblioteca = {};
+      });
+  }
 
   deleteBiblioteca(id: string): void {
     this.bibliotecaService.deleteBiblioteca(id)
-    .subscribe(() => {
-      this.getBibliotecas();
-    });
+      .subscribe(() => {
+        this.getBibliotecas();
+      });
   }
 
-  editBiblioteca(id: string):void{
-    this.getBibliotecaById(id)
+  editBiblioteca(id: string): void {
+    this.bibliotecaService.getBibliotecaById(id)
+      .subscribe((biblioteca) => {
+        this.currentBiblioteca = biblioteca;
+        // Puedes establecer los valores en el formulario si es necesario
+        this.bibliotecaForm.patchValue({
+          title: biblioteca.title,
+          descripcion: biblioteca.descripcion,
+          imagen: null,  // O mantén el campo de imagen como nulo si no deseas cambiar la imagen al editar
+          fecha: biblioteca.fecha
+        });
+      });
+  }
+
+  onFileChange(event: any): void {
+    const fileInput = this.bibliotecaForm.get('imagen');
+    if (fileInput) {
+      const file = (event.target as HTMLInputElement).files?.[0];
+      if (file) {
+        fileInput.setValue(file);
+        fileInput.updateValueAndValidity();
+      }
+    }
   }
 }

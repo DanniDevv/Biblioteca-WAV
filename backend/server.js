@@ -40,9 +40,12 @@ mongoose.connect('mongodb://0.0.0.0:27017/mydatabase', {
 // Definir rutas para CRUD de Biblioteca
 app.get('/api/bibliotecas', bibliotecaController.getBibliotecas);
 app.get('/api/bibliotecas/:id', bibliotecaController.getBibliotecaById);
-app.post('/api/bibliotecas', bibliotecaController.createBiblioteca);
-app.put('/api/bibliotecas/:id', bibliotecaController.updateBiblioteca);
+app.post('/api/bibliotecas', upload.single('imagen'), bibliotecaController.createBiblioteca);
+app.put('/api/bibliotecas/:id', upload.single('imagen'), bibliotecaController.updateBiblioteca);
 app.delete('/api/bibliotecas/:id', bibliotecaController.deleteBiblioteca);
+
+// Ruta para servir archivos estáticos (opcional, dependiendo de tus necesidades)
+app.use('/uploads', express.static('uploads'));
 
 // Iniciar el servidor
 app.listen(port, () => {
