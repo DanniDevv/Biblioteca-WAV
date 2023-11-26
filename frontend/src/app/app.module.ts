@@ -6,11 +6,14 @@ import { AppComponent } from './app.component';
 import { BibliotecaComponent } from './biblioteca/biblioteca.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
-    BibliotecaComponent
+    BibliotecaComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -18,6 +21,8 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]
