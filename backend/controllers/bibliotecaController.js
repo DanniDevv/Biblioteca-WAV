@@ -31,7 +31,7 @@ exports.getBibliotecaById = (req, res) => {
 exports.createBiblioteca = (req, res) => {
     const newBiblioteca = new Biblioteca({
         title: req.body.title,
-        description: req.body.description,
+        descripcion: req.body.descripcion,
         imagen: req.body.imagen,
         fecha: req.body.fecha,
         // Otros campos que desees para tu modelo
@@ -48,6 +48,8 @@ exports.createBiblioteca = (req, res) => {
 
 // Actualizar un elemento existente
 exports.updateBiblioteca = (req, res) => {
+    console.log('Cuerpo de la solicitud:', req.body); // Agrega esta línea para depurar
+    
     Biblioteca.findByIdAndUpdate(req.params.id, req.body, { new: true })
         .then((biblioteca) => {
             if (!biblioteca) {
@@ -59,6 +61,7 @@ exports.updateBiblioteca = (req, res) => {
             res.status(500).json({ error: error.message });
         });
 };
+
 
 // Eliminar un elemento existente
 exports.deleteBiblioteca = (req, res) => {

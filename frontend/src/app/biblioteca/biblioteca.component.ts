@@ -38,13 +38,14 @@ export class BibliotecaComponent implements OnInit {
     });
   }
 
-  updateBiblioteca(id: string, biblioteca: any): void {
-    this.bibliotecaService.updateBiblioteca(id, biblioteca)
-    .subscribe(() => {
-      this.getBibliotecas();
-      this.currentBiblioteca = {};
-    });
-  }
+// En el componente Angular
+updateBiblioteca(id: string, biblioteca: any): void {
+  this.bibliotecaService.updateBiblioteca(id, biblioteca)
+      .subscribe(() => {
+          this.getBibliotecas();
+          this.currentBiblioteca = {};
+      });
+}
 
   deleteBiblioteca(id: string): void {
     this.bibliotecaService.deleteBiblioteca(id)
