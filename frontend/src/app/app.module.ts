@@ -9,11 +9,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { BibliotecaListComponent } from './biblioteca-list/biblioteca-list.component';
 @NgModule({
   declarations: [
     AppComponent,
     BibliotecaComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    BibliotecaListComponent
   ],
   imports: [
     BrowserModule,
