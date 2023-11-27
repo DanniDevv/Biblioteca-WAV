@@ -21,7 +21,7 @@ export class BibliotecaComponent implements OnInit {
   constructor(
     private bibliotecaService: BibliotecaService,
     private fb: FormBuilder,
-    private dialog: MatDialog  // Añadir esta línea
+    private dialog: MatDialog
 
   ) {
     this.bibliotecaForm = this.fb.group({
@@ -84,11 +84,10 @@ export class BibliotecaComponent implements OnInit {
     this.bibliotecaService.getBibliotecaById(id)
       .subscribe((biblioteca) => {
         this.currentBiblioteca = biblioteca;
-        // Puedes establecer los valores en el formulario si es necesario
         this.bibliotecaForm.patchValue({
           title: biblioteca.title,
           descripcion: biblioteca.descripcion,
-          imagen: null,  // O mantén el campo de imagen como nulo si no deseas cambiar la imagen al editar
+          imagen: null,  
           fecha: biblioteca.fecha
         });
       });

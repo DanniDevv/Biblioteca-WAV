@@ -1,11 +1,21 @@
-<div class="form-group">
-  <label for="search">Buscar:</label>
-  <input type="text" class="form-control" [(ngModel)]="searchQuery" name="search" (input)="applyFilter()">
-</div>
+<div class="search-form">
+  <div class="input-wrapper">
+    <button class="icon">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="25px" width="25px">
+        <path stroke-linejoin="round" stroke-linecap="round" stroke-width="1.5" stroke="#fff" d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"></path>
+        <path stroke-linejoin="round" stroke-linecap="round" stroke-width="1.5" stroke="#fff" d="M22 22L20 20"></path>
+      </svg>
+    </button>
+    <input placeholder="search.." class="input" name="text" type="text" [(ngModel)]="searchQuery" name="search" (input)="applyFilter()">
+  </div>
 
-<!-- Botones para ordenar -->
-<button class="btn btn-sm btn-primary" (click)="orderList('title')">Ordenar por Título</button>
-<button class="btn btn-sm btn-primary" (click)="orderList('fecha')">Ordenar por Fecha</button>
+
+  <!-- Botones para ordenar -->
+  <div class="button-group">
+    <button class="btn btn-sm btn-primary" (click)="orderList('title')">Ordenar por Título</button>
+    <button class="btn btn-sm btn-primary" (click)="orderList('fecha')">Ordenar por Fecha</button>
+  </div>
+</div>
 
 <!-- Lista de bibliotecas -->
 <table class="table">
@@ -22,7 +32,9 @@
     <tr *ngFor="let biblioteca of filteredBibliotecas">
       <td>{{ biblioteca.title }}</td>
       <td>{{ biblioteca.descripcion }}</td>
-      <td><img [src]="'http://localhost:3000/' + biblioteca?.imagenPath" alt="Biblioteca Image" style="max-width: 100px;"></td>
+      <td>
+        <img [src]="'http://localhost:3000/' + biblioteca?.imagenPath" alt="Biblioteca Image" style="max-width: 100px;">
+      </td>
       <td>{{ biblioteca.fecha | date }}</td>
       <td>
         <button class="btn btn-sm btn-primary" (click)="editBiblioteca(biblioteca._id)">Edit</button>

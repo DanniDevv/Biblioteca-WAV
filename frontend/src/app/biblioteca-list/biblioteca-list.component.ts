@@ -70,7 +70,6 @@ export class BibliotecaListComponent implements OnInit {
     });
   }
 
-  // Agrega este método solo si necesitas la funcionalidad de edición en este componente
   editBiblioteca(id: string): void {
     this.bibliotecaService.getBibliotecaById(id)
       .subscribe((biblioteca) => {

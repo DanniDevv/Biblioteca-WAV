@@ -1,7 +1,6 @@
 <div class="container mt-4">
   <h2>Bibliotecas</h2>
 
-  <!-- Formulario para crear/editar una biblioteca -->
   <form [formGroup]="bibliotecaForm" (ngSubmit)="currentBiblioteca._id ? updateBiblioteca(currentBiblioteca._id) : createBiblioteca()" enctype="multipart/form-data">
     <div class="form-group">
       <label for="title">Title:</label>
