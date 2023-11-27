@@ -3,6 +3,7 @@ import { BibliotecaService } from '../biblioteca.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { BibliotecaEditComponent } from '../biblioteca-edit/biblioteca-edit.component';
 
 @Component({
   selector: 'app-biblioteca-list',
@@ -71,6 +72,21 @@ export class BibliotecaListComponent implements OnInit {
 
   // Agrega este método solo si necesitas la funcionalidad de edición en este componente
   editBiblioteca(id: string): void {
-    this.router.navigate(['/bibliotecas', id, 'edit']);
+    this.bibliotecaService.getBibliotecaById(id)
+      .subscribe((biblioteca) => {
+        const dialogRef = this.dialog.open(BibliotecaEditComponent, {
+          width: '400px',
+          data: biblioteca
+        });
+
+        dialogRef.afterClosed().subscribe((result: any) => {
+          if (result) {
+            this.bibliotecaService.updateBiblioteca(id, result)
+              .subscribe(() => {
+                this.getBibliotecas();
+              });
+          }
+        });
+      });
   }
 }

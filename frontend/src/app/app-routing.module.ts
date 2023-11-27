@@ -5,7 +5,7 @@ import { BibliotecaListComponent } from './biblioteca-list/biblioteca-list.compo
 
 const routes: Routes = [
   {path:'biblioteca', component:BibliotecaComponent},
-  {path:'list', component:BibliotecaListComponent}
+  {path:'list', component:BibliotecaListComponent},
 ];
 
 @NgModule({
