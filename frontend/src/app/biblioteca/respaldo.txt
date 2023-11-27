@@ -1,0 +1,35 @@
+  <hr>
+  <!-- Campo de búsqueda -->
+<div class="form-group">
+  <label for="search">Buscar:</label>
+  <input type="text" class="form-control" [(ngModel)]="searchQuery" name="search" (input)="applyFilter()">
+</div>
+<!-- Botones para ordenar -->
+<button class="btn btn-sm btn-primary" (click)="orderList('title')">Ordenar por Título</button>
+<button class="btn btn-sm btn-primary" (click)="orderList('fecha')">Ordenar por Fecha</button>
+
+  <!-- Lista de bibliotecas -->
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Image</th>
+        <th>Fecha</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let biblioteca of filteredBibliotecas">
+        <td>{{ biblioteca.title }}</td>
+        <td>{{ biblioteca.descripcion }}</td>
+        <td><img [src]="'http://localhost:3000/' + biblioteca?.imagenPath" alt="Biblioteca Image" style="max-width: 100px;"></td>
+        <td>{{ biblioteca.fecha | date }}</td>
+        <td>
+          <button class="btn btn-sm btn-primary" (click)="editBiblioteca(biblioteca._id)">Edit</button>
+          <button class="btn btn-sm btn-danger" (click)="deleteBiblioteca(biblioteca._id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
